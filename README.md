@@ -49,8 +49,8 @@ Subscribed Topics:
 
 Published Topic: 
 - `/move_base_simple/goal` for the next goal location
-- '/visualization_marker` for visualizing the frontier locations (blue markers)
-- '/scan_locations` for visualizing the scan locations (red circles)
+- `/visualization_marker` for visualizing the frontier locations (blue markers)
+- `/scan_locations` for visualizing the scan locations (red circles)
 
 
 ## Demo Video
