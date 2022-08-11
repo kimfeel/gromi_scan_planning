@@ -45,14 +45,14 @@ Subscribed Topics:
 - `/move_base/result` for determining when the robot has reached its goal position
 - `/move_base/feedback` for determining where the robot is in the map at any given point in time
 - `/scan_cloud` for subscribing the front 2d Lidar point cloud data
-- `/octomap_point_cloud_centers' for subscribing octomap point cloud center data 
+- `/octomap_point_cloud_centers` for subscribing octomap point cloud center data 
 
 Published Topic: 
 - `/move_base_simple/goal` for the next goal location
-- '/visualization_marker' for visualizing the frontier locations (blue markers)
-- '/scan_locations' for visualizing the scan locations (red circles)
+- '/visualization_marker` for visualizing the frontier locations (blue markers)
+- '/scan_locations` for visualizing the scan locations (red circles)
 
 
 ## Demo Video
-- A video of Jackal exploring a simulated environment (rectangular objects) in Gazebo and visualizing in RViZ [here](https://www.youtube.com/watch?v=RbIVOsBVjnk).
-- A video of Jackal exploring a simulated environment (cylinder objects) in Gazebo and visualizing in RViZ [here](https://www.youtube.com/watch?v=74FLvJFuMgo).
+- A video of Jackal exploring a simulated environment (rectangular objects) in Gazebo and visualizing in RViZ. [here](https://www.youtube.com/watch?v=RbIVOsBVjnk).
+- A video of Jackal exploring a simulated environment (cylinder objects) in Gazebo and visualizing in RViZ. [here](https://www.youtube.com/watch?v=74FLvJFuMgo).
