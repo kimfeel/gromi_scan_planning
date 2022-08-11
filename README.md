@@ -38,6 +38,13 @@ pip install opencv-python
 
 This node is the brain that computes what the next goal position and scan location should be the robot should go to.
 
+Parameters 
+- `self.minScanDist = 3` : no duplicate scan within 3 m
+- `self.min_bndX = -10` : X min bound
+- `self.max_bndX = 10` : X max bound
+- `self.min_bndY = -10` : Y min bound
+- `self.max_bndY = 10` : Y max bound
+    
 Subscribed Topics:
 - `/map` for updating the current map
 - `/move_base/global_costmap/costmap` for updating the current global costmap
