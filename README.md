@@ -29,8 +29,10 @@ pip install cmake
 pip install opencv-python
 ```
 
-## Run the Simulation
-- Launch : `roslaunch gromi_scan_planning simulation_gromi.launch`
+## How to run
+- simulation with gmapping : `roslaunch gromi_scan_planning simulation_gromi_gmaaping.launch`
+- simulation with lego-loam : `roslaunch gromi_scan_planning simulation_gromi.launch`
+- real gromi hardware : `roslaunch gromi_scan_planning gromi_scanning.launch`
 
 #### Nodes
 ##### Exploration Node
@@ -58,6 +60,57 @@ Published Topic:
 - `/move_base_simple/goal` for the next goal location
 - `/visualization_marker` for visualizing the frontier locations (blue markers)
 - `/scan_locations` for visualizing the scan locations (red circles)
+
+
+[`gromi_static_scan.py`](src/gromi_static_scan.py)
+
+This node is to take pictures and run/stop the rotation scanning motor.
+
+Parameters 
+- `self.rotation_time = 100` : scanning time for one rotation
+- `self.num_of_pic = 8` : number of pictures that take for one rotation
+- `self.time_between_pics` : time between each picture
+- `self.trigger` : trigger to take pictures and run/stop the rotation scanning motor
+- `self.cnt` : number of pictures that take at current
+    
+Subscribed Topics:
+- `/start_scan` for receiving command that start the static scanning process
+
+Published Topic: 
+- `/run_scan_motor` for sending command that run/stop the rotation scanning motor
+- `/finish_scan` for sending the command that finish the static scanning process
+
+
+[`motor_controller.py`](src/motor_controller.py)
+
+This node is to make differential wheel speed.
+
+Parameters 
+- `self.mps_2_data_coeff = 212.6` : Conversion factor for converting m/s to a data value for the motor controller. Setting this to a higher value will lead to the robot moving faster for the same speed input.
+- `self.radps_2_data_coeff = 233.9` : Conversion factor for converting rad/s to a data value offset for the motor controller. Setting this to a higher value will lead to the robot rotating faster for the same angular speed input. 
+- `self.smoothing_coeff = 0.8` : The smoothing coefficient controls how much smoothing is applied. Must be between [0, 1). Setting to 0.0 would apply zero smoothing while setting to 1.0 would make the system unresponsive. Keep in mind that higher publishing frequency requires a higher smoothing coefficient for the same result
+- `self.pub_frequency = 20.0` : The controller's running frequency in Hz
+    
+Subscribed Topics:
+- `/cmd_vel/nav` for receiving velocity command 
+
+Published Topic: 
+- `/left_wheel_vel` for sending the left wheel velocity command
+- `/right_wheel_vel` for sending the right wheel velocity command
+
+
+[`scan_motor_controller.py`](src/scan_motor_controller.py)
+
+This node is to make rotation of scanning system.
+
+Parameters 
+- `self.start_command = "0106007D40002812"` : define the start commands for the scanning motor
+- `self.stop_command = "0106007D0020180A"` : define the stop commands for the scanning motor
+- `self.run_motor` : true - run the scanning motor, false - stop the scanning motor
+- `self.pub_frequency = 20.0` : The controller's running frequency in Hz
+    
+Subscribed Topics:
+- `/run_scan_motor` for receiving command that start to run the scanning motor 
 
 
 ## Demo Video
