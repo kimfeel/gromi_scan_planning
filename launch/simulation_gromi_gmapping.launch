@@ -1,0 +1,42 @@
+<launch>
+
+    <include file="$(find gromi_scan_planning)/launch/world.launch">
+	<arg name="world_name" value="$(find gromi_scan_planning)/worlds/boxes.world" />
+	<!-- cylinders, boxes, parking_lot -->
+    </include>
+
+    <include file="$(find gromi_scan_planning)/launch/gromi_setup.launch">
+	<arg name="delta_value" value="0.1" />
+	<arg name="xmin" value="-10"/>
+    	<arg name="ymin" value="-10"/>
+    	<arg name="xmax" value="10"/>
+    	<arg name="ymax" value="10"/>
+    </include>
+
+    <node pkg="gromi_scan_planning" type="pt_generation.py" name="pt" output="screen"/>
+    
+    <node pkg="octomap_server" type="octomap_server_node" name="octomap_server">
+        <param name="resolution" value="1" />
+	<param name="frame_id" type="string" value="/map" />
+        <param name="sensor_model/max_range" value="150.0" />
+	<remap from="cloud_in" to="/segmented_cloud_pure" />
+    </node>
+
+    <include file="$(find gromi_scan_planning)/launch/view_robot.launch" />
+
+    <!--node pkg="gromi_scan_planning" type="laserscan_to_pointcloud_node" name="scan_to_ptcld" respawn="true">
+      <param name="min_range" value="0.05" />
+      <param name="use_high_fidelity_projection" value="true" />
+      <param name="target_frame" value="velodyne" />
+      <rosparam command="load" file="$(find gromi_scan_planning)/config/default_scan_shadow_filter.yaml" />
+    </node-->
+
+    <node pkg="gromi_scan_planning" type="explore.py" name="explore" output="screen" />
+
+    <node pkg="gromi_scan_planning" type="gromi_static_scan.py" name="gromi_static_scan" output="screen" />
+
+    <node pkg="gromi_scan_planning" type="motor_controller.py" name="wheel_motor_controller" output="screen" />
+
+    <node pkg="gromi_scan_planning" type="scan_motor_controller.py" name="scan_motor_controller" output="screen" />
+
+</launch>
