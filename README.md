@@ -118,3 +118,10 @@ Subscribed Topics:
 ## Demo Video
 - A video of Jackal exploring a simulated environment (rectangular objects) in Gazebo and visualizing in RViZ. [here](https://www.youtube.com/watch?v=RbIVOsBVjnk).
 - A video of Jackal exploring a simulated environment (cylinder objects) in Gazebo and visualizing in RViZ. [here](https://www.youtube.com/watch?v=74FLvJFuMgo).
+
+
+## References
+- https://mechwiz.github.io/Portfolio/jackal.html
+- https://github.com/TixiaoShan/jackal_velodyne
+- https://github.com/ChengeYang/SLAM-with-Velodyne-Lidar-and-Jackal-UGV
+
