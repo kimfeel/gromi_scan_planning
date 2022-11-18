@@ -55,11 +55,13 @@ Subscribed Topics:
 - `/move_base/feedback` for determining where the robot is in the map at any given point in time
 - `/scan_cloud` for subscribing the front 2d Lidar point cloud data
 - `/octomap_point_cloud_centers` for subscribing octomap point cloud center data 
+- `/finish_scan` for subscribing to stop the static scanning process 
 
 Published Topic: 
 - `/move_base_simple/goal` for the next goal location
 - `/visualization_marker` for visualizing the frontier locations (blue markers)
 - `/scan_locations` for visualizing the scan locations (red circles)
+- `/start_scan` for starting the static scanning process  
 
 
 [`gromi_static_scan.py`](src/gromi_static_scan.py)
