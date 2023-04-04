@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import tf
 import math
 import numpy
 import rospy
@@ -22,10 +23,10 @@ def MakeGroundFrontier(data):
 	x_diff = p[0]-current_pose.x
 	y_diff = p[1]-current_pose.y
 	z_diff = p[2]-current_pose.z
-	current_height = current_pose.y
-	dist_tmp = math.sqrt( x_diff**2 + z_diff**2 )
-	ang_tmp = math.atan2(x_diff, z_diff) * (180/math.pi)
-	heading = math.atan2(current_pose.x-pre_pose[0], current_pose.z-pre_pose[2]) * (180/math.pi)
+	current_height = current_pose.z
+	dist_tmp = math.sqrt( x_diff**2 + y_diff**2 )
+	ang_tmp = math.atan2(x_diff, y_diff) * (180/math.pi)
+	heading = math.atan2(current_pose.x-pre_pose[0], current_pose.y-pre_pose[2]) * (180/math.pi)
 	ang_diff = abs(heading - ang_tmp)
         if ( (ang_diff < 60) and (dist_tmp < 30)):#and (y_diff > 0) ):	
     	    #pts.append([p[0], current_height, p[2]])
@@ -38,20 +39,20 @@ def MakeGroundFrontier(data):
     #cost_fn = [ang[i] for i in range(len(dist))]
     sorted_index = numpy.argsort(cost_fn)
     best_frontier = pts[sorted_index[0]]
-    angle = math.atan2(best_frontier[0]-current_pose.x, best_frontier[2]-current_pose.z) * (180/math.pi)
+    angle = math.atan2(best_frontier[0]-current_pose.x, best_frontier[2]-current_pose.y) * (180/math.pi)
 #    print pts
 #    print sorted(cost_fn)
 #    print sorted(dist)
 #    print current_pose
 	    
     header = Header()
-    header.frame_id = "/camera_init"
+    header.frame_id = "/map"
     pc2_ground_frontier = point_cloud2.create_cloud(header, fields, pts)
     pc2_ground_frontier.header.stamp = rospy.Time.now()
     pub_ground_frontier.publish(pc2_ground_frontier)
     
     BestGoal = PoseStamped()
-    BestGoal.header.frame_id = "/camera_init"
+    BestGoal.header.frame_id = "/map"
     BestGoal.header.stamp = rospy.Time.now()
     BestGoal.pose.orientation.w = 1
     BestGoal.pose.position.x = best_frontier[0]
@@ -68,12 +69,12 @@ def CurrentPose(data):
     
     current_pose = data.pose.pose.position
     CurrentPose = PoseStamped()
-    CurrentPose.header.frame_id = "/camera_init"
+    CurrentPose.header.frame_id = "/map"
     CurrentPose.header.stamp = rospy.Time.now()
     CurrentPose.pose.orientation.w = 1
-    CurrentPose.pose.position.x = current_pose.x
-    CurrentPose.pose.position.y = current_pose.y	
-    CurrentPose.pose.position.z = current_pose.z
+    CurrentPose.pose.position.x = current_pose.z
+    CurrentPose.pose.position.y = current_pose.x	
+    CurrentPose.pose.position.z = current_pose.y
     pub_current_pose.publish(CurrentPose)
     cnt = cnt + 1
     if cnt > 10:
@@ -101,7 +102,7 @@ def LaserCloudLessSharp(data):
         count = count + 1
         scanPositions.append([current_pose.x, current_pose.y, current_pose.z])
         header = Header()
-        header.frame_id = "/camera_init"
+        header.frame_id = "/map"
         pc2 = point_cloud2.create_cloud(header, fields, scanPositions)
         pc2.header.stamp = rospy.Time.now()
         pub_scan_pose.publish(pc2)
